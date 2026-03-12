@@ -104,6 +104,106 @@ function renderNavbar() {
         }
     }
     updateCartBadge();
+
+    // Update Location UI from storage
+    const savedLoc = localStorage.getItem('thayaLocation') || 'Mumbai 400001';
+    const locText = document.getElementById('current-location-text');
+    if (locText) locText.textContent = `Delivering to ${savedLoc}`;
+}
+
+/**
+ * Geolocation & Location Services
+ */
+function askForLocation() {
+    if (!navigator.geolocation) {
+        showToast('Geolocation is not supported by your browser.', 'error');
+        return;
+    }
+    
+    showToast('Fetching your current location...', 'info');
+    
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        try {
+            // Reverse Geocoding using free Nominatim API
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
+            const data = await res.json();
+            
+            const city = data.address.city || data.address.town || data.address.village || 'Unknown City';
+            const postcode = data.address.postcode || '';
+            const locationStr = `${city} ${postcode}`.trim();
+            
+            localStorage.setItem('thayaLocation', locationStr);
+            const lTexts = document.querySelectorAll('#current-location-text');
+            lTexts.forEach(lt => lt.textContent = `Delivering to ${locationStr}`);
+            
+            showToast(`Location updated to ${city}!`, 'success');
+        } catch (error) {
+            const manual = prompt('Could not fetch address automatically. Enter your city/zip:', 'Mumbai 400001');
+            if (manual) {
+                localStorage.setItem('thayaLocation', manual);
+                const lTexts = document.querySelectorAll('#current-location-text');
+                lTexts.forEach(lt => lt.textContent = `Delivering to ${manual}`);
+            }
+        }
+    }, (err) => {
+        showToast('Location access denied or unavailable.', 'info');
+    });
+}
+
+/**
+ * Reusable Product Card Component
+ * Dynamically handles both 'sale' and 'rental' types
+ */
+function renderProductCard(p) {
+    const isRental = p.type === 'rental';
+    const id = p._id || p.id;
+    const nameEscaped = p.name.replace(/'/g, "\\'");
+    
+    // Rental Specific Elements
+    const rentalInput = isRental ? `
+        <div class="days-input-wrap">
+            <label for="days-${id}">Days:</label>
+            <input type="number" id="days-${id}" min="1" value="1" max="30">
+        </div>
+    ` : '';
+
+    const priceHtml = isRental ? `
+        <span class="price-currency">₹</span>
+        <span class="price-amount rental-price">${p.pricePerDay.toLocaleString()}</span>
+        <span class="price-unit">/ day</span>
+    ` : `
+        <span class="price-currency">₹</span>
+        <span class="price-amount">${p.price.toLocaleString()}</span>
+    `;
+
+    const buttonHtml = isRental ? `
+        <button class="btn-add rental" onclick="addRentalToCart('${id}', '${nameEscaped}', ${p.pricePerDay}, '${p.image}', '${p.category}')">
+            Rent Now
+        </button>
+    ` : `
+        <button class="btn-add" onclick="addShopToCart('${id}', '${nameEscaped}', ${p.price}, '${p.image}', '${p.category}')">
+            Add to Cart
+        </button>
+    `;
+
+    return `
+        <div class="product-card">
+            <div class="card-img-wrap">
+                <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x300?text=${isRental?'Rental':'Product'}'">
+                <span class="card-badge ${isRental ? 'rental' : ''}">${isRental ? '🔑 Rent' : '🛍 Buy'}</span>
+            </div>
+            <div class="card-body">
+                <span class="card-cat">${p.category}</span>
+                <h3 class="card-name">${p.name}</h3>
+                <div class="card-price">${priceHtml}</div>
+            </div>
+            <div class="card-footer">
+                ${rentalInput}
+                ${buttonHtml}
+            </div>
+        </div>
+    `;
 }
 
 document.addEventListener('DOMContentLoaded', renderNavbar);

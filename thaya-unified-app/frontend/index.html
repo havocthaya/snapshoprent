@@ -56,10 +56,10 @@
             <span>SnapShopRent<span class="in">.in</span></span>
         </a>
         
-            <div class="nav-location" onclick="window.location.href='login.html'" style="cursor:pointer">
+            <div class="nav-location" id="nav-location-btn" onclick="askForLocation()" style="cursor:pointer">
                 <span style="font-size: 1.2rem;">📍</span>
                 <div>
-                    <span class="loc-text">Delivering to Mumbai 400001</span>
+                    <span class="loc-text" id="current-location-text">Delivering to Mumbai 400001</span>
                     <span class="loc-sub">Update location</span>
                 </div>
             </div>
@@ -417,27 +417,7 @@ function renderShopGrid(products) {
         grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📦</div><h3>No products found</h3><p>Try a different filter.</p></div>`;
         return;
     }
-    grid.innerHTML = products.map(p => `
-        <div class="product-card">
-            <div class="card-img-wrap">
-                <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x300?text=Product'">
-                <span class="card-badge">🛍 Buy</span>
-            </div>
-            <div class="card-body">
-                <span class="card-cat">${p.category}</span>
-                <h3 class="card-name">${p.name}</h3>
-                <div class="card-price">
-                    <span class="price-currency">₹</span>
-                    <span class="price-amount">${p.price.toLocaleString()}</span>
-                </div>
-            </div>
-            <div class="card-footer">
-                <button class="btn-add" onclick="addShopToCart('${p._id||p.id}', '${p.name.replace(/'/g,"\\'")}', ${p.price}, '${p.image}', '${p.category}')">
-                    Add to Cart
-                </button>
-            </div>
-        </div>
-    `).join('');
+    grid.innerHTML = products.map(p => renderProductCard(p)).join('');
 }
 
 
@@ -478,32 +458,7 @@ function renderRentalGrid(products) {
         grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔑</div><h3>No rentals found</h3><p>Try a different filter.</p></div>`;
         return;
     }
-    grid.innerHTML = products.map(p => `
-        <div class="product-card">
-            <div class="card-img-wrap">
-                <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x300?text=Rental'">
-                <span class="card-badge rental">🔑 Rent</span>
-            </div>
-            <div class="card-body">
-                <span class="card-cat">${p.category}</span>
-                <h3 class="card-name">${p.name}</h3>
-                <div class="card-price">
-                    <span class="price-currency">₹</span>
-                    <span class="price-amount rental-price">${p.pricePerDay.toLocaleString()}</span>
-                    <span class="price-unit">/ day</span>
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="days-input-wrap">
-                    <label for="days-${p._id||p.id}">Days:</label>
-                    <input type="number" id="days-${p._id||p.id}" min="1" value="1" max="30">
-                </div>
-                <button class="btn-add rental" onclick="addRentalToCart('${p._id||p.id}', '${p.name.replace(/'/g,"\\'")}', ${p.pricePerDay}, '${p.image}', '${p.category}')">
-                    Rent Now
-                </button>
-            </div>
-        </div>
-    `).join('');
+    grid.innerHTML = products.map(p => renderProductCard(p)).join('');
 }
 
 

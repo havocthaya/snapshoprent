@@ -6,9 +6,8 @@ const store = require('../config/store');
 // Only ONE admin can log in — credentials are locked here.
 const ADMIN = {
     id: 'admin_root',
-    name: 'Project Owner',
-    email: 'snapshoprent', // Secure Admin ID
-    // Password: 123456 (or via ENV)
+    name: 'Gopi Admin',
+    email: 'gopi123', // Admin Username/ID
     password: '123456',
     isAdmin: true,
 };
