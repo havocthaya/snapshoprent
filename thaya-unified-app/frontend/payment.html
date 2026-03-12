@@ -224,10 +224,10 @@
                 <div class="panel-title">🧾 Order Summary</div>
                 <div id="order-items-list"></div>
                 <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
-                    <div class="summary-row"><span>Shop Items</span><span class="amount" id="sum-shop">₱0</span></div>
-                    <div class="summary-row"><span>Rental Items</span><span class="amount" id="sum-rental">₱0</span></div>
+                    <div class="summary-row"><span>Shop Items</span><span class="amount" id="sum-shop">₹0</span></div>
+                    <div class="summary-row"><span>Rental Items</span><span class="amount" id="sum-rental">₹0</span></div>
                     <div class="summary-row" id="sum-shipping-row" style="display:none"><span>Shipping</span><span class="amount" style="color:#1DB954">FREE</span></div>
-                    <div class="summary-row total"><span>Total</span><span class="amount" id="sum-total">₱0</span></div>
+                    <div class="summary-row total"><span>Total</span><span class="amount" id="sum-total">₹0</span></div>
                 </div>
                 <button class="pay-btn" id="pay-btn" onclick="processPayment()">🔒 &nbsp;Pay Now</button>
                 <div style="text-align:center;font-size:.75rem;color:var(--text-muted);margin-top:12px">🔐 Secured & Encrypted Payment</div>
@@ -295,8 +295,8 @@ function renderOrderSummary() {
         if (item.type === 'sale') shopTotal += total;
         else rentalTotal += total;
         const meta = item.type === 'rental'
-            ? `${item.qty}x • ${item.days} day${item.days>1?'s':''} • ₱${item.pricePerDay?.toLocaleString()}/day`
-            : `${item.qty}x • ₱${item.price?.toLocaleString()}`;
+            ? `${item.qty}x • ${item.days} day${item.days>1?'s':''} • ₹${item.pricePerDay?.toLocaleString()}/day`
+            : `${item.qty}x • ₹${item.price?.toLocaleString()}`;
         return `
         <div class="order-mini-item">
             <img class="order-mini-img" src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/52'">
@@ -305,13 +305,13 @@ function renderOrderSummary() {
                 <div class="order-mini-meta">${meta}</div>
                 <span class="item-type-badge ${item.type}" style="margin-top:4px">${item.type==='sale'?'🛍 Buy':'🔑 Rent'}</span>
             </div>
-            <div class="order-mini-price">₱${total.toLocaleString()}</div>
+            <div class="order-mini-price">₹${total.toLocaleString()}</div>
         </div>`;
     }).join('');
 
-    document.getElementById('sum-shop').textContent   = `₱${shopTotal.toLocaleString()}`;
-    document.getElementById('sum-rental').textContent = `₱${rentalTotal.toLocaleString()}`;
-    document.getElementById('sum-total').textContent  = `₱${(shopTotal+rentalTotal).toLocaleString()}`;
+    document.getElementById('sum-shop').textContent   = `₹${shopTotal.toLocaleString()}`;
+    document.getElementById('sum-rental').textContent = `₹${rentalTotal.toLocaleString()}`;
+    document.getElementById('sum-total').textContent  = `₹${(shopTotal+rentalTotal).toLocaleString()}`;
 
     const hasShop = cart.some(i => i.type === 'sale');
     if (hasShop) {
