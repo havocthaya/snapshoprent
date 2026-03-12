@@ -35,7 +35,7 @@
                 <option>Shop</option>
             </select>
             <input type="text" class="search-input" placeholder="Search SnapShopRent.in">
-            <button class="search-btn">🔍</button>
+            <button class="search-btn" onclick="switchMode('shop')">🔍</button>
         </div>
 
         <div class="nav-actions">
@@ -43,7 +43,7 @@
                 <span class="top">Hello, sign in</span>
                 <span class="bottom">Account & Lists ▾</span>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="window.location.href='login.html'">
                 <span class="top">Returns</span>
                 <span class="bottom">& Orders</span>
             </div>
@@ -59,12 +59,12 @@
     <nav class="nav-main">
         <ul class="main-links">
             <li><a href="#" class="all">☰ All</a></li>
-            <li><a href="#" onclick="switchMode('shop')">Fresh</a></li>
-            <li><a href="#" onclick="switchMode('shop')">Bestsellers</a></li>
-            <li><a href="#" onclick="switchMode('shop')">Mobiles</a></li>
+            <li><a href="#" onclick="filterShop('Bestsellers', this)">Fresh</a></li>
+            <li><a href="#" onclick="filterShop('Electronics', this)">Bestsellers</a></li>
+            <li><a href="#" onclick="filterShop('Electronics', this)">Mobiles</a></li>
             <li><a href="#" onclick="switchMode('rental')">Rental Gear</a></li>
-            <li><a href="#" onclick="switchMode('shop')">Electronics</a></li>
-            <li><a href="#" onclick="switchMode('shop')">Home & Kitchen</a></li>
+            <li><a href="#" onclick="filterShop('Electronics', this)">Electronics</a></li>
+            <li><a href="#" onclick="filterShop('Home', this)">Home & Kitchen</a></li>
             <li><a href="admin-login.html">Admin Panel</a></li>
         </ul>
     </nav>
@@ -76,7 +76,7 @@
         <div class="promo-text">
             <h2>Starting ₹199<br>Deals on fashion & beauty</h2>
             <p>Upgrade your lifestyle with the latest trends and essential gear.</p>
-            <div class="promo-badge">Explore All Offers →</div>
+            <div class="promo-badge" onclick="switchMode('shop')" style="cursor:pointer">Explore All Offers →</div>
         </div>
         <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80" class="promo-img" alt="Fashion Promo">
     </div>
@@ -285,17 +285,38 @@ function switchMode(mode) {
     if (panelShop) panelShop.style.display = mode === 'shop' ? '' : 'none';
     if (panelRental) panelRental.style.display = mode === 'rental' ? '' : 'none';
     
-    // Optional: Update tab highlighting if elements exist
-    const tabShop = document.getElementById('tab-shop');
-    const tabRental = document.getElementById('tab-rental');
-    if (tabShop) tabShop.className = 'tab-btn' + (mode === 'shop' ? ' active-shop' : '');
-    if (tabRental) tabRental.className = 'tab-btn' + (mode === 'rental' ? ' active-rental' : '');
-
     // Scroll to products section for better UX
     const section = document.querySelector('.section');
     if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     if (mode === 'rental' && rentalProducts.length === 0) loadRentalProducts();
+}
+
+function filterShop(cat, btn) {
+    switchMode('shop'); // Ensure we are in shop mode and scrolled
+    document.querySelectorAll('#shop-filters .filter-pill').forEach(b => b.classList.remove('active'));
+    // If btn is passed, highlight it, otherwise find the one with the category
+    if (btn) {
+        btn.classList.add('active');
+    } else {
+        const pills = document.querySelectorAll('#shop-filters .filter-pill');
+        pills.forEach(p => { if (p.textContent === cat) p.classList.add('active'); });
+    }
+    const filtered = cat === 'All' ? shopProducts : shopProducts.filter(p => p.category === cat);
+    renderShopGrid(filtered);
+}
+
+function filterRental(cat, btn) {
+    switchMode('rental'); // Ensure we are in rental mode and scrolled
+    document.querySelectorAll('#rental-filters .filter-pill').forEach(b => b.classList.remove('active'));
+    if (btn) {
+        btn.classList.add('active');
+    } else {
+        const pills = document.querySelectorAll('#rental-filters .filter-pill');
+        pills.forEach(p => { if (p.textContent === cat) p.classList.add('active'); });
+    }
+    const filtered = cat === 'All' ? rentalProducts : rentalProducts.filter(p => p.category === cat);
+    renderRentalGrid(filtered);
 }
 
 /* ---- SHOP ---- */
@@ -345,12 +366,6 @@ function renderShopGrid(products) {
     `).join('');
 }
 
-function filterShop(cat, btn) {
-    document.querySelectorAll('#shop-filters .filter-pill').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const filtered = cat === 'All' ? shopProducts : shopProducts.filter(p => p.category === cat);
-    renderShopGrid(filtered);
-}
 
 function addShopToCart(id, name, price, image, category) {
     const cart = getCart();
@@ -362,6 +377,8 @@ function addShopToCart(id, name, price, image, category) {
     }
     saveCart(cart);
     showToast(`"${name}" added to cart!`, 'success');
+    // Navigate to next page (cart) as requested
+    setTimeout(() => window.location.href = 'cart.html', 1000);
 }
 
 /* ---- RENTAL ---- */
@@ -415,12 +432,6 @@ function renderRentalGrid(products) {
     `).join('');
 }
 
-function filterRental(cat, btn) {
-    document.querySelectorAll('#rental-filters .filter-pill').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const filtered = cat === 'All' ? rentalProducts : rentalProducts.filter(p => p.category === cat);
-    renderRentalGrid(filtered);
-}
 
 function addRentalToCart(id, name, pricePerDay, image, category) {
     const daysEl = document.getElementById(`days-${id}`);
@@ -434,7 +445,9 @@ function addRentalToCart(id, name, pricePerDay, image, category) {
         cart.push({ id, name, pricePerDay, image, category, qty: 1, days, type: 'rental' });
     }
     saveCart(cart);
-    showToast(`"${name}" added to rental bag! (${days} day${days>1?'s':''})`, 'success');
+    showToast(`"${name}" added to rental bag!`, 'success');
+    // Navigate to next page (cart) as requested
+    setTimeout(() => window.location.href = 'cart.html', 1000);
 }
 
 /* ---- demo data (fallback when no MongoDB) ---- */

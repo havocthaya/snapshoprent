@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -26,67 +28,74 @@
     <main class="container py-5 flex-grow-1">
         <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active fw-bold px-4" id="products-tab" data-bs-toggle="tab" data-bs-target="#products-pane" type="button" role="tab">📦 Products</button>
+                <button class="nav-link active fw-bold px-4" id="products-tab" data-bs-toggle="tab"
+                    data-bs-target="#products-pane" type="button" role="tab">📦 Products</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link fw-bold px-4" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders-pane" type="button" role="tab">🛒 Orders</button>
+                <button class="nav-link fw-bold px-4" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders-pane"
+                    type="button" role="tab">🛒 Orders</button>
             </li>
         </ul>
 
         <div id="admin-error" class="alert alert-danger" style="display:none;"></div>
-        
+
         <div class="tab-content" id="adminTabsContent">
             <!-- Products Tab -->
             <div class="tab-pane fade show active" id="products-pane" role="tabpanel">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="fw-bold fs-4">Product Management</h2>
-                    <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#productModal" id="btn-create-product">
+                    <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#productModal"
+                        id="btn-create-product">
                         <i class="fas fa-plus me-1"></i> Create Product
                     </button>
                 </div>
-        
-        <div class="table-responsive shadow-sm rounded-3">
-            <table class="table table-hover table-bordered admin-table mb-0 bg-white align-middle">
-                <thead>
-                    <tr>
-                        <th width="10%">ID</th>
-                        <th width="35%">Name</th>
-                        <th width="15%">Price</th>
-                        <th width="20%">Image URL</th>
-                        <th width="20%">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="products-tbody">
-                    <tr><td colspan="5" class="text-center">Loading...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Orders Tab -->
-            <div class="tab-pane fade" id="orders-pane" role="tabpanel">
-                <div class="d-flex justify-content-between align-items-center mb-4 mt-2">
-                    <h2 class="fw-bold fs-4">Customer Orders</h2>
-                </div>
-                
+
                 <div class="table-responsive shadow-sm rounded-3">
                     <table class="table table-hover table-bordered admin-table mb-0 bg-white align-middle">
                         <thead>
                             <tr>
-                                <th width="20%">Order ID</th>
-                                <th width="20%">User</th>
-                                <th width="15%">Date</th>
-                                <th width="15%">Total</th>
-                                <th width="15%">Payment</th>
-                                <th width="15%">Status</th>
+                                <th width="10%">ID</th>
+                                <th width="35%">Name</th>
+                                <th width="15%">Price</th>
+                                <th width="20%">Image URL</th>
+                                <th width="20%">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="orders-tbody">
-                            <tr><td colspan="6" class="text-center py-4">Loading orders...</td></tr>
+                        <tbody id="products-tbody">
+                            <tr>
+                                <td colspan="5" class="text-center">Loading...</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Orders Tab -->
+                <div class="tab-pane fade" id="orders-pane" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-4 mt-2">
+                        <h2 class="fw-bold fs-4">Customer Orders</h2>
+                    </div>
+
+                    <div class="table-responsive shadow-sm rounded-3">
+                        <table class="table table-hover table-bordered admin-table mb-0 bg-white align-middle">
+                            <thead>
+                                <tr>
+                                    <th width="20%">Order ID</th>
+                                    <th width="20%">User</th>
+                                    <th width="15%">Date</th>
+                                    <th width="15%">Total</th>
+                                    <th width="15%">Payment</th>
+                                    <th width="15%">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-tbody">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">Loading orders...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
     </main>
 
     <!-- Product Modal -->
@@ -116,7 +125,8 @@
                             <label class="form-label">Description</label>
                             <textarea class="form-control" id="p-description" rows="3" required></textarea>
                         </div>
-                        <div id="modal-error" class="alert alert-danger" style="display:none; font-size: 0.85rem;"></div>
+                        <div id="modal-error" class="alert alert-danger" style="display:none; font-size: 0.85rem;">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -133,4 +143,5 @@
     <script src="js/api.js"></script>
     <script src="js/admin.js"></script>
 </body>
+
 </html>

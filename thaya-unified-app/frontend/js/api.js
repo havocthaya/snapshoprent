@@ -71,13 +71,17 @@ function renderNavbar() {
     if (amazonUserEl) {
         if (user) {
             amazonUserEl.innerHTML = `
-              <span class="top">Hello, ${user.name.split(' ')[0]}</span>
-              <span class="bottom" onclick="logout()" style="cursor:pointer">Sign Out ▾</span>
+              <div style="display:flex; flex-direction:column; cursor:pointer;" onclick="${user.isAdmin ? "window.location.href='admin.html'" : "logout()"}">
+                <span class="top">Hello, ${user.name.split(' ')[0]} ${user.isAdmin ? '(Admin)' : ''}</span>
+                <span class="bottom">${user.isAdmin ? 'Dashboard' : 'Sign Out'} ▾</span>
+              </div>
             `;
         } else {
             amazonUserEl.innerHTML = `
-              <span class="top" onclick="window.location.href='login.html'">Hello, sign in</span>
-              <span class="bottom" onclick="window.location.href='login.html'">Account & Lists ▾</span>
+              <div style="display:flex; flex-direction:column; cursor:pointer;" onclick="window.location.href='login.html'">
+                <span class="top">Hello, sign in</span>
+                <span class="bottom">Account & Lists ▾</span>
+              </div>
             `;
         }
     }
