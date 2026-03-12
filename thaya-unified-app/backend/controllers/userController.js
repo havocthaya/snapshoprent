@@ -1,16 +1,16 @@
-const jwt  = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const store  = require('../config/store');
+const store = require('../config/store');
 
 // ─── Fixed Admin Account ────────────────────────────────
 // Only ONE admin can log in — credentials are locked here.
 const ADMIN = {
-    id:       'admin_root',
-    name:     'Project Owner',
-    email:    'admin@snapshoprent.com', // Secure Admin ID
+    id: 'admin_root',
+    name: 'Project Owner',
+    email: 'snapshoprent', // Secure Admin ID
     // Password: 123456 (or via ENV)
-    password: '$2b$10$fixedHashPlaceholder', 
-    isAdmin:  true,
+    password: '123456',
+    isAdmin: true,
 };
 
 let adminPasswordReady = false;
@@ -33,11 +33,11 @@ const generateToken = (id, isAdmin) =>
 
 function buildRes(user) {
     return {
-        _id:     user._id || user.id,
-        name:    user.name,
-        email:   user.email,
+        _id: user._id || user.id,
+        name: user.name,
+        email: user.email,
         isAdmin: user.isAdmin || false,
-        token:   generateToken(user._id || user.id, user.isAdmin),
+        token: generateToken(user._id || user.id, user.isAdmin),
     };
 }
 
@@ -86,7 +86,7 @@ const registerUser = async (req, res) => {
 
     if (store.users.find(u => u.email === email)) return res.status(400).json({ message: 'User already exists' });
 
-    const salt   = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10);
     const hashed = await bcrypt.hash(password, salt);
     const newUser = { id: `usr_${Date.now()}`, name, email, password: hashed, isAdmin: false };
     store.users.push(newUser);
