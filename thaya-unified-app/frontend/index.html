@@ -9,6 +9,43 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+<!-- SIDE MENU DRAWER (AMAZON STYLE) -->
+<div class="side-drawer" id="side-drawer">
+    <div class="drawer-header">
+        <span class="drawer-user-icon">👤</span>
+        <span id="drawer-user-name">Hello, Sign in</span>
+        <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+    </div>
+    <div class="drawer-content">
+        <div class="drawer-section">
+            <h3>Trending</h3>
+            <a href="#" onclick="filterShop('Bestsellers', null); toggleDrawer();">Best Sellers</a>
+            <a href="#" onclick="filterShop('Electronics', null); toggleDrawer();">New Releases</a>
+            <a href="#" onclick="filterShop('Outdoors', null); toggleDrawer();">Movers & Shakers</a>
+        </div>
+        <div class="drawer-section">
+            <h3>Admin & Tools</h3>
+            <a href="admin.html">⚙️ Admin Panel</a>
+            <a href="#" onclick="generateAdminID(); return false;">🆔 Generate Admin ID</a>
+            <a href="#" onclick="showSettings(); return false;">🛠 Settings</a>
+            <a href="#" onclick="showCoupons(); return false;">🎟 Coupon Options</a>
+        </div>
+        <div class="drawer-section">
+            <h3>Shop By Category</h3>
+            <a href="#" onclick="filterShop('Electronics', null); toggleDrawer();">Electronics</a>
+            <a href="#" onclick="filterShop('Home', null); toggleDrawer();">Home & Kitchen</a>
+            <a href="#" onclick="filterShop('Footwear', null); toggleDrawer();">Footwear</a>
+            <a href="#" onclick="switchMode('rental'); toggleDrawer();">Rental Gear</a>
+        </div>
+        <div class="drawer-section">
+            <h3>Help & Settings</h3>
+            <a href="login.html">Your Account</a>
+            <a href="login.html">Customer Service</a>
+            <a href="#" onclick="logout(); return false;">Sign Out</a>
+        </div>
+    </div>
+</div>
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
 
 <!-- AMAZON-STYLE HEADER -->
 <header class="amazon-header">
@@ -58,7 +95,7 @@
     <!-- Main Navigation Bar -->
     <nav class="nav-main">
         <ul class="main-links">
-            <li><a href="#" class="all" onclick="filterShop('All', null)">☰ All</a></li>
+            <li><a href="#" class="all" onclick="toggleDrawer(); return false;">☰ All</a></li>
             <li><a href="#" onclick="filterShop('Bestsellers', this)">Fresh</a></li>
             <li><a href="#" onclick="filterShop('Electronics', this)">Bestsellers</a></li>
             <li><a href="#" onclick="filterShop('Electronics', this)">Mobiles</a></li>
@@ -277,6 +314,31 @@
 let currentMode = 'shop';
 let shopProducts = [];
 let rentalProducts = [];
+
+function toggleDrawer() {
+    const drawer = document.getElementById('side-drawer');
+    const overlay = document.getElementById('drawer-overlay');
+    drawer.classList.toggle('open');
+    overlay.classList.toggle('visible');
+    
+    // Update user name in drawer
+    const user = getUser();
+    const nameEl = document.getElementById('drawer-user-name');
+    if (nameEl) nameEl.textContent = user ? `Hello, ${user.name.split(' ')[0]}` : 'Hello, Sign in';
+}
+
+function generateAdminID() {
+    const id = 'ADM-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    showToast(`Generated Admin ID: ${id}`, 'success');
+}
+
+function showSettings() {
+    showToast('Settings panel currently in development.', 'info');
+}
+
+function showCoupons() {
+    showToast('Available Coupons: WELCOME10, SNAPRENT20', 'success');
+}
 
 function switchMode(mode) {
     currentMode = mode;

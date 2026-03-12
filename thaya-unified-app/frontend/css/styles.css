@@ -359,7 +359,7 @@ img { max-width: 100%; display: block; }
 .card-body { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; }
 .card-cat { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
 .card-name { font-size: 1rem; line-height: 1.3; font-weight: 500; color: #0F1111; margin-bottom: 6px; 
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 40px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-clamp: 2; overflow: hidden; height: 40px;
 }
 
 .card-desc { display: none; } /* Standard Amazon grid look */
@@ -1105,3 +1105,84 @@ img { max-width: 100%; display: block; }
     display: inline-block;
 }
 .card-footer-link:hover { color: #C7511F; text-decoration: underline; }
+
+/* ---- SIDE DRAWER (AMAZON STYLE) ---- */
+.side-drawer {
+    position: fixed;
+    top: 0; left: -365px;
+    width: 365px; height: 100vh;
+    background: #fff;
+    z-index: 5000;
+    box-shadow: 10px 0 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+}
+.side-drawer.open { transform: translateX(365px); }
+
+.drawer-header {
+    background: var(--amazon-nav);
+    color: #fff;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+.drawer-user-icon { font-size: 1.6rem; }
+.drawer-close {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.drawer-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 0 40px;
+}
+
+.drawer-section {
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 15px;
+}
+.drawer-section:last-child { border-bottom: none; }
+
+.drawer-section h3 {
+    padding: 0 30px 10px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #0F1111;
+}
+
+.drawer-section a {
+    display: block;
+    padding: 12px 30px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #333;
+    transition: background 0.2s;
+}
+.drawer-section a:hover {
+    background: #eaeded;
+    color: #000;
+}
+
+.drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 4999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+.drawer-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
