@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | SnapShopRent</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body { background: linear-gradient(135deg, #0F0E1A 0%, #1a1a3e 50%, #0d2137 100%); }
+        .auth-container { min-height: 100vh; }
+        .admin-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(108,99,255,.15); border: 1px solid rgba(108,99,255,.3);
+            border-radius: var(--radius-full); padding: 6px 16px;
+            font-size: .78rem; font-weight: 700; color: var(--primary);
+            letter-spacing: .5px; margin-bottom: 20px;
+        }
+        .auth-card { border: 1px solid rgba(108,99,255,.2); }
+        .cred-hint {
+            margin-top: 20px; padding: 14px 16px;
+            background: rgba(108,99,255,.08);
+            border: 1px dashed rgba(108,99,255,.3);
+            border-radius: var(--radius-md);
+            font-size: .8rem; color: var(--text-muted); line-height: 1.7;
+        }
+        .cred-hint strong { color: var(--primary); font-family: monospace; font-size: .88rem; }
+        .lock-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
+    </style>
+</head>
+<body>
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-logo">
+            <span class="lock-icon">🔐</span>
+            <div class="logo-text" style="font-size:1.3rem">📸 SnapShopRent</div>
+            <div class="admin-badge">⚙️ ADMIN ACCESS ONLY</div>
+            <p style="color:var(--text-muted);font-size:.83rem">This portal is restricted to authorized administrators.</p>
+        </div>
+
+        <div id="error-msg" style="display:none;background:#ffe8e8;border:1px solid #ffb3b3;padding:10px 14px;border-radius:10px;color:#cc0000;font-size:.85rem;margin-bottom:16px;"></div>
+
+        <form id="admin-login-form">
+            <div class="form-group">
+                <label>Admin ID</label>
+                <input class="form-control" type="text" id="email" placeholder="gopi" required>
+            </div>
+            <div class="form-group">
+                <label>Admin Password</label>
+                <input class="form-control" type="password" id="password" placeholder="123456" required>
+            </div>
+            <button type="submit" class="form-submit" id="submit-btn">🔐 &nbsp;Access Admin Panel</button>
+        </form>
+
+        <div class="cred-hint">
+            🔑 <strong>Default Admin Credentials</strong><br>
+            Admin ID: &nbsp;<strong>gopi</strong><br>
+            Password: <strong>123456</strong>
+        </div>
+
+        <div class="auth-footer" style="margin-top:16px">
+            <a href="index.html" style="color:var(--text-muted)">← Back to Store</a>
+        </div>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+// If already logged in as admin, go straight to dashboard
+const u = getUser();
+if (u && u.isAdmin) window.location.href = 'admin.html';
+
+document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn   = document.getElementById('submit-btn');
+    const errEl = document.getElementById('error-msg');
+    btn.textContent = 'Verifying…';
+    btn.disabled = true;
+    errEl.style.display = 'none';
+
+    try {
+        const res  = await fetch(`${API}/users/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email:    document.getElementById('email').value,
+                password: document.getElementById('password').value,
+            })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Login failed');
+        if (!data.isAdmin) throw new Error('Access denied. This account is not an admin.');
+
+        localStorage.setItem('thayaToken', data.token);
+        localStorage.setItem('thayaUser',  JSON.stringify({ name: data.name, email: data.email, isAdmin: true }));
+        window.location.href = 'admin.html';
+    } catch(err) {
+        errEl.textContent    = err.message;
+        errEl.style.display  = 'block';
+        btn.textContent      = '🔐 Access Admin Panel';
+        btn.disabled         = false;
+    }
+});
+</script>
+</body>
+</html>

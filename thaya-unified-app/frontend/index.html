@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapShopRent – Shop & Rent Everything</title>
+    <meta name="description" content="SnapShopRent – your one-stop platform to buy products and rent gear.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍</text></svg>">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="main-nav">
+    <a href="index.html" class="navbar-brand" style="gap:8px">
+        <span class="logo-icon">📸</span>
+        <span>Snap<span class="brand-shop">Shop</span><span class="brand-sep">&amp;</span><span class="brand-rent">Rent</span></span>
+    </a>
+    <div class="navbar-links">
+        <a href="index.html" class="nav-link active" id="nav-home">
+            <span>🏠</span> <span>Home</span>
+        </a>
+        <a href="cart.html" class="nav-link" id="nav-cart">
+            🛒 Cart <span class="nav-badge cart-count-badge" style="display:none">0</span>
+        </a>
+        <div id="nav-user" style="display:flex;align-items:center;gap:8px;"></div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <span class="hero-label">✨ SnapShopRent — Mini Shop + Rental in One</span>
+    <h1>Your One-Stop<br><span class="highlight">Shop & Rent</span> Platform</h1>
+    <p>Browse premium products to buy, or rent the gear you need — all from a single, beautiful marketplace.</p>
+    <div class="hero-btns">
+        <button class="btn btn-shop" onclick="switchMode('shop')">🛍 &nbsp;Start Shopping</button>
+        <button class="btn btn-outline" onclick="switchMode('rental')">🔑 &nbsp;Browse Rentals</button>
+    </div>
+</div>
+
+<!-- MODE TABS -->
+<div class="mode-tabs" id="mode-tabs">
+    <button class="tab-btn active-shop" id="tab-shop" onclick="switchMode('shop')">🛍 &nbsp;Mini Shop</button>
+    <button class="tab-btn" id="tab-rental" onclick="switchMode('rental')">🔑 &nbsp;Rental</button>
+</div>
+
+<!-- MAIN SECTION -->
+<div class="section">
+
+    <!-- SHOP PANEL -->
+    <div id="panel-shop">
+        <div class="section-header">
+            <h2 class="section-title">Featured <span>Products</span></h2>
+            <div class="filter-bar" id="shop-filters">
+                <button class="filter-pill active" onclick="filterShop('All', this)">All</button>
+                <button class="filter-pill" onclick="filterShop('Electronics', this)">Electronics</button>
+                <button class="filter-pill" onclick="filterShop('Footwear', this)">Footwear</button>
+                <button class="filter-pill" onclick="filterShop('Wearables', this)">Wearables</button>
+                <button class="filter-pill" onclick="filterShop('Outdoors', this)">Outdoors</button>
+            </div>
+        </div>
+        <div id="shop-loading" class="spinner-wrap"><div class="spinner"></div></div>
+        <div class="product-grid" id="shop-grid"></div>
+    </div>
+
+    <!-- RENTAL PANEL -->
+    <div id="panel-rental" style="display:none">
+        <div class="section-header">
+            <h2 class="section-title rental">Available <span>Rentals</span></h2>
+            <div class="filter-bar" id="rental-filters">
+                <button class="filter-pill active" onclick="filterRental('All', this)">All</button>
+                <button class="filter-pill" onclick="filterRental('Bikes', this)">Bikes</button>
+                <button class="filter-pill" onclick="filterRental('Electronics', this)">Electronics</button>
+                <button class="filter-pill" onclick="filterRental('Tools', this)">Tools</button>
+                <button class="filter-pill" onclick="filterRental('Outdoors', this)">Outdoors</button>
+            </div>
+        </div>
+        <div id="rental-loading" class="spinner-wrap"><div class="spinner"></div></div>
+        <div class="product-grid" id="rental-grid"></div>
+    </div>
+
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="js/api.js"></script>
+<script>
+let currentMode = 'shop';
+let shopProducts = [];
+let rentalProducts = [];
+
+function switchMode(mode) {
+    currentMode = mode;
+    document.getElementById('panel-shop').style.display   = mode === 'shop'   ? '' : 'none';
+    document.getElementById('panel-rental').style.display = mode === 'rental' ? '' : 'none';
+    const tabShop   = document.getElementById('tab-shop');
+    const tabRental = document.getElementById('tab-rental');
+    tabShop.className   = 'tab-btn' + (mode === 'shop'   ? ' active-shop'   : '');
+    tabRental.className = 'tab-btn' + (mode === 'rental' ? ' active-rental' : '');
+
+    if (mode === 'rental' && rentalProducts.length === 0) loadRentalProducts();
+}
+
+/* ---- SHOP ---- */
+async function loadShopProducts() {
+    const grid = document.getElementById('shop-grid');
+    const loading = document.getElementById('shop-loading');
+    loading.style.display = 'flex';
+    grid.innerHTML = '';
+    try {
+        const res = await fetch(`${API}/products?type=sale`);
+        shopProducts = await res.json();
+        renderShopGrid(shopProducts);
+    } catch (e) {
+        // demo fallback
+        shopProducts = getDemoShopProducts();
+        renderShopGrid(shopProducts);
+    }
+    loading.style.display = 'none';
+}
+
+function renderShopGrid(products) {
+    const grid = document.getElementById('shop-grid');
+    if (!products.length) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📦</div><h3>No products found</h3><p>Try a different filter.</p></div>`;
+        return;
+    }
+    grid.innerHTML = products.map(p => `
+        <div class="product-card">
+            <div class="card-img-wrap">
+                <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x300?text=Product'">
+                <span class="card-badge">🛍 Buy</span>
+            </div>
+            <div class="card-body">
+                <span class="card-cat">${p.category}</span>
+                <h3 class="card-name">${p.name}</h3>
+                <p class="card-desc">${p.description}</p>
+                <div class="card-price">
+                    <span class="price-amount">₱${p.price.toLocaleString()}</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn-add" onclick="addShopToCart('${p._id||p.id}', '${p.name.replace(/'/g,"\\'")}', ${p.price}, '${p.image}', '${p.category}')">
+                    🛒 &nbsp;Add to Cart
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterShop(cat, btn) {
+    document.querySelectorAll('#shop-filters .filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filtered = cat === 'All' ? shopProducts : shopProducts.filter(p => p.category === cat);
+    renderShopGrid(filtered);
+}
+
+function addShopToCart(id, name, price, image, category) {
+    const cart = getCart();
+    const existing = cart.find(i => i.id === id && i.type === 'sale');
+    if (existing) {
+        existing.qty++;
+    } else {
+        cart.push({ id, name, price, image, category, qty: 1, type: 'sale' });
+    }
+    saveCart(cart);
+    showToast(`"${name}" added to cart!`, 'success');
+}
+
+/* ---- RENTAL ---- */
+async function loadRentalProducts() {
+    const grid = document.getElementById('rental-grid');
+    const loading = document.getElementById('rental-loading');
+    loading.style.display = 'flex';
+    grid.innerHTML = '';
+    try {
+        const res = await fetch(`${API}/products?type=rental`);
+        rentalProducts = await res.json();
+        renderRentalGrid(rentalProducts);
+    } catch (e) {
+        rentalProducts = getDemoRentalProducts();
+        renderRentalGrid(rentalProducts);
+    }
+    loading.style.display = 'none';
+}
+
+function renderRentalGrid(products) {
+    const grid = document.getElementById('rental-grid');
+    if (!products.length) {
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔑</div><h3>No rentals found</h3><p>Try a different filter.</p></div>`;
+        return;
+    }
+    grid.innerHTML = products.map(p => `
+        <div class="product-card">
+            <div class="card-img-wrap">
+                <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x300?text=Rental'">
+                <span class="card-badge rental">🔑 Rent</span>
+            </div>
+            <div class="card-body">
+                <span class="card-cat">${p.category}</span>
+                <h3 class="card-name">${p.name}</h3>
+                <p class="card-desc">${p.description}</p>
+                <div class="card-price">
+                    <span class="price-amount rental-price">₱${p.pricePerDay.toLocaleString()}</span>
+                    <span class="price-unit">/ day</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="days-input-wrap">
+                    <label for="days-${p._id||p.id}">Days:</label>
+                    <input type="number" id="days-${p._id||p.id}" min="1" value="1" max="30">
+                </div>
+                <button class="btn-add rental" onclick="addRentalToCart('${p._id||p.id}', '${p.name.replace(/'/g,"\\'")}', ${p.pricePerDay}, '${p.image}', '${p.category}')">
+                    🔑 &nbsp;Add to Bag
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterRental(cat, btn) {
+    document.querySelectorAll('#rental-filters .filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filtered = cat === 'All' ? rentalProducts : rentalProducts.filter(p => p.category === cat);
+    renderRentalGrid(filtered);
+}
+
+function addRentalToCart(id, name, pricePerDay, image, category) {
+    const daysEl = document.getElementById(`days-${id}`);
+    const days = parseInt(daysEl ? daysEl.value : 1) || 1;
+    const cart = getCart();
+    const existing = cart.find(i => i.id === id && i.type === 'rental');
+    if (existing) {
+        existing.qty++;
+        existing.days = days;
+    } else {
+        cart.push({ id, name, pricePerDay, image, category, qty: 1, days, type: 'rental' });
+    }
+    saveCart(cart);
+    showToast(`"${name}" added to rental bag! (${days} day${days>1?'s':''})`, 'success');
+}
+
+/* ---- demo data (fallback when no MongoDB) ---- */
+function getDemoShopProducts() {
+    return [
+        { id:'s1', name:'Wireless Earbuds Pro', image:'https://images.unsplash.com/photo-1608156639585-b3a032ef9689?w=600&auto=format&fit=crop&q=80', description:'Premium wireless earbuds with ANC and 30h battery.', category:'Electronics', price:1299 },
+        { id:'s2', name:'Mechanical Keyboard', image:'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600&auto=format&fit=crop&q=80', description:'RGB backlit mechanical keyboard with cherry MX switches.', category:'Electronics', price:2499 },
+        { id:'s3', name:'Running Shoes X-1', image:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80', description:'Lightweight responsive running shoes with cushioned sole.', category:'Footwear', price:3499 },
+        { id:'s4', name:'Smart Watch Series 5', image:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80', description:'Fitness tracking smart watch with heart rate and GPS.', category:'Wearables', price:5999 },
+        { id:'s5', name:'Backpack Explorer 40L', image:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop&q=80', description:'Durable 40L hiking backpack with ergonomic design.', category:'Outdoors', price:1899 },
+        { id:'s6', name:'Bluetooth Speaker MAX', image:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&auto=format&fit=crop&q=80', description:'Waterproof portable speaker with 360° surround sound.', category:'Electronics', price:2199 },
+    ];
+}
+function getDemoRentalProducts() {
+    return [
+        { id:'r1', name:'Mountain Bike X-200', image:'https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?w=600&auto=format&fit=crop&q=80', description:'Hardtail mountain bike with 21 speeds and front suspension.', category:'Bikes', pricePerDay:350 },
+        { id:'r2', name:'Sony A7 III Camera', image:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&auto=format&fit=crop&q=80', description:'Full-frame mirrorless camera with 4K video.', category:'Electronics', pricePerDay:1200 },
+        { id:'r3', name:'Professional Drill Kit', image:'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600&auto=format&fit=crop&q=80', description:'Cordless hammer drill with multiple bits and two batteries.', category:'Tools', pricePerDay:250 },
+        { id:'r4', name:'Camping Tent (4-Person)', image:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&auto=format&fit=crop&q=80', description:'Waterproof 4-person tent with easy-setup technology.', category:'Outdoors', pricePerDay:400 },
+        { id:'r5', name:'DJI Mini 3 Drone', image:'https://images.unsplash.com/photo-1508444845599-5c89863b1c44?w=600&auto=format&fit=crop&q=80', description:'Compact drone with 4K camera, 38-min flight time.', category:'Electronics', pricePerDay:1500 },
+        { id:'r6', name:'Kayak Double Seat', image:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&auto=format&fit=crop&q=80', description:'Tandem kayak for two. Includes paddles and life jackets.', category:'Outdoors', pricePerDay:550 },
+    ];
+}
+
+document.addEventListener('DOMContentLoaded', loadShopProducts);
+</script>
+</body>
+</html>
