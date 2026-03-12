@@ -6,60 +6,191 @@
     <title>Admin Login | SnapShopRent</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
-        body { background: linear-gradient(135deg, #0F0E1A 0%, #1a1a3e 50%, #0d2137 100%); }
-        .auth-container { min-height: 100vh; }
-        .admin-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: rgba(108,99,255,.15); border: 1px solid rgba(108,99,255,.3);
-            border-radius: var(--radius-full); padding: 6px 16px;
-            font-size: .78rem; font-weight: 700; color: var(--primary);
-            letter-spacing: .5px; margin-bottom: 20px;
+        body { 
+            background: #F0F2F5; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
         }
-        .auth-card { border: 1px solid rgba(108,99,255,.2); }
-        .cred-hint {
-            margin-top: 20px; padding: 14px 16px;
-            background: rgba(108,99,255,.08);
-            border: 1px dashed rgba(108,99,255,.3);
-            border-radius: var(--radius-md);
-            font-size: .8rem; color: var(--text-muted); line-height: 1.7;
+        .auth-card {
+            background: #FFFFFF;
+            padding: 48px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .cred-hint strong { color: var(--primary); font-family: monospace; font-size: .88rem; }
-        .lock-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .logo-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #5D5FEF;
+            margin-bottom: 8px;
+        }
+        .logo-main span {
+            font-size: 2.2rem;
+        }
+        .auth-subtitle {
+            font-size: 1.1rem;
+            color: #64748B;
+            font-weight: 500;
+        }
+        .form-container {
+            width: 100%;
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1E293B;
+        }
+        .form-control {
+            width: 100%;
+            padding: 14px 20px;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #F8FAFC;
+            transition: all 0.2s;
+            color: #1E293B;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #5D5FEF;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(93, 95, 239, 0.1);
+        }
+        .form-submit {
+            width: 100%;
+            padding: 16px;
+            background: #5D5FEF;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+            box-shadow: 0 4px 14px rgba(93, 95, 239, 0.3);
+        }
+        .form-submit:hover {
+            background: #4B4DCC;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(93, 95, 239, 0.4);
+        }
+        .form-submit:disabled {
+            background: #94A3B8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .admin-id-hint {
+            margin-top: 32px;
+            padding: 20px;
+            background: #F1F5F9;
+            border-radius: 16px;
+            width: 100%;
+            font-size: 0.9rem;
+            border: 1.5px dashed #CBD5E1;
+        }
+        .admin-id-hint h4 {
+            margin: 0 0 10px 0;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cred-box {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .cred-item {
+            display: flex;
+            justify-content: space-between;
+        }
+        .cred-label { color: #64748B; font-weight: 500; }
+        .cred-val { color: #5D5FEF; font-weight: 700; font-family: monospace; }
+        
+        #error-msg {
+            width: 100%;
+            padding: 14px;
+            background: #FEF2F2;
+            border: 1px solid #FEE2E2;
+            border-radius: 12px;
+            color: #DC2626;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            display: none;
+            text-align: center;
+        }
+        .auth-footer {
+            margin-top: 24px;
+            font-size: 0.95rem;
+            color: #64748B;
+        }
+        .auth-footer a {
+            color: #5D5FEF;
+            font-weight: 700;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
-<div class="auth-container">
-    <div class="auth-card">
-        <div class="auth-logo">
-            <span class="lock-icon">🔐</span>
-            <div class="logo-text" style="font-size:1.3rem">📸 SnapShopRent</div>
-            <div class="admin-badge">⚙️ ADMIN ACCESS ONLY</div>
-            <p style="color:var(--text-muted);font-size:.83rem">This portal is restricted to authorized administrators.</p>
+
+<div class="auth-card">
+    <div class="auth-logo">
+        <div class="logo-main"><span>📸</span> SnapShopRent</div>
+        <div class="auth-subtitle">Sign in to your account</div>
+    </div>
+
+    <div id="error-msg"></div>
+
+    <form class="form-container" id="admin-login-form">
+        <div class="form-group">
+            <label>Admin ID</label>
+            <input class="form-control" type="text" id="email" placeholder="you@example.com" required>
         </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input class="form-control" type="password" id="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="form-submit" id="submit-btn">Sign In</button>
+    </form>
 
-        <div id="error-msg" style="display:none;background:#ffe8e8;border:1px solid #ffb3b3;padding:10px 14px;border-radius:10px;color:#cc0000;font-size:.85rem;margin-bottom:16px;"></div>
-
-        <form id="admin-login-form">
-            <div class="form-group">
-                <label>Admin ID</label>
-                <input class="form-control" type="text" id="email" placeholder="gopi" required>
+    <div class="admin-id-hint">
+        <h4>🔑 Default Credentials</h4>
+        <div class="cred-box">
+            <div class="cred-item">
+                <span class="cred-label">Admin ID</span>
+                <span class="cred-val">gopi</span>
             </div>
-            <div class="form-group">
-                <label>Admin Password</label>
-                <input class="form-control" type="password" id="password" placeholder="123456" required>
+            <div class="cred-item">
+                <span class="cred-label">Password</span>
+                <span class="cred-val">123456</span>
             </div>
-            <button type="submit" class="form-submit" id="submit-btn">🔐 &nbsp;Access Admin Panel</button>
-        </form>
-
-        <div class="cred-hint">
-            🔑 <strong>Default Admin Credentials</strong><br>
-            Admin ID: &nbsp;<strong>gopi</strong><br>
-            Password: <strong>123456</strong>
         </div>
+    </div>
 
-        <div class="auth-footer" style="margin-top:16px">
-            <a href="index.html" style="color:var(--text-muted)">← Back to Store</a>
-        </div>
+    <div class="auth-footer">
+        Don't have an account? <a href="index.html">Create one</a>
     </div>
 </div>
 
@@ -73,7 +204,7 @@ document.getElementById('admin-login-form').addEventListener('submit', async (e)
     e.preventDefault();
     const btn   = document.getElementById('submit-btn');
     const errEl = document.getElementById('error-msg');
-    btn.textContent = 'Verifying…';
+    btn.textContent = 'Verifying...';
     btn.disabled = true;
     errEl.style.display = 'none';
 
@@ -88,15 +219,20 @@ document.getElementById('admin-login-form').addEventListener('submit', async (e)
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || 'Login failed');
-        if (!data.isAdmin) throw new Error('Access denied. This account is not an admin.');
+        if (!data.isAdmin) throw new Error('Access denied. Admin privileges required.');
 
         localStorage.setItem('thayaToken', data.token);
-        localStorage.setItem('thayaUser',  JSON.stringify({ name: data.name, email: data.email, isAdmin: true }));
+        localStorage.setItem('thayaUser',  JSON.stringify({ 
+            name: data.name, 
+            email: data.email, 
+            isAdmin: true,
+            id: data._id 
+        }));
         window.location.href = 'admin.html';
     } catch(err) {
         errEl.textContent    = err.message;
         errEl.style.display  = 'block';
-        btn.textContent      = '🔐 Access Admin Panel';
+        btn.textContent      = 'Sign In';
         btn.disabled         = false;
     }
 });
