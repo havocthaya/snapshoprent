@@ -318,189 +318,78 @@ img { max-width: 100%; display: block; }
     color: #fff;
 }
 
-/* ---- PRODUCT GRID ---- */
+/* ---- PRODUCT GRID & CARDS (AMAZON STYLE) ---- */
+.section { max-width: 1400px; margin: 0 auto; padding: 0 20px 60px; }
+.section-header { margin-bottom: 24px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.section-title { font-size: 1.6rem; font-weight: 800; color: #0F1111; }
+.section-title span { color: var(--shop-color); }
+.section-title.rental span { color: var(--rental-color); }
+
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
 }
 
-/* ---- PRODUCT CARD ---- */
 .product-card {
-    background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-sm);
+    background: #fff;
+    padding: 0;
+    border: 1px solid transparent; 
     transition: var(--transition);
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
 }
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
-}
+.product-card:hover { border-color: var(--border); box-shadow: var(--shadow-sm); }
 
 .card-img-wrap {
-    position: relative;
-    aspect-ratio: 4/3;
-    overflow: hidden;
-    background: var(--bg);
+    width: 100%; aspect-ratio: 1;
+    background: #f7f7f7;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
 }
-
-.card-img-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform .4s ease;
-}
-
-.product-card:hover .card-img-wrap img {
-    transform: scale(1.06);
-}
-
+.card-img-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 10px; mix-blend-mode: multiply; }
 .card-badge {
     position: absolute;
-    top: 12px;
-    left: 12px;
-    background: linear-gradient(135deg, var(--shop-color), #FF8C42);
-    color: #fff;
-    font-size: .7rem;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
-    letter-spacing: .5px;
+    top: 10px; left: 10px;
+    background: var(--shop-color);
+    color: #fff; font-size: 0.65rem; font-weight: 800;
+    padding: 3px 8px; border-radius: 2px;
+}
+.card-badge.rental { background: var(--rental-color); }
+
+.card-body { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; }
+.card-cat { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.card-name { font-size: 1rem; line-height: 1.3; font-weight: 500; color: #0F1111; margin-bottom: 6px; 
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 40px;
 }
 
-.card-badge.rental {
-    background: linear-gradient(135deg, var(--rental-color), var(--primary-dark));
-}
+.card-desc { display: none; } /* Standard Amazon grid look */
 
-.card-body {
-    padding: 18px 20px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 8px;
-}
+.card-price { display: flex; align-items: baseline; gap: 4px; margin-top: auto; }
+.price-currency { font-size: 0.85rem; font-weight: 500; align-self: flex-start; margin-top: 2px; }
+.price-amount { font-size: 1.6rem; font-weight: 500; color: #0F1111; }
+.rental-price { color: var(--rental-color); }
+.price-unit { font-size: 0.85rem; color: var(--text-muted); margin-left: 4px; }
 
-.card-cat {
-    font-size: .72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .8px;
-    color: var(--text-muted);
-}
-
-.card-name {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.3;
-}
-
-.card-desc {
-    font-size: .82rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.card-price {
-    margin-top: auto;
-    display: flex;
-    align-items: baseline;
-    gap: 4px;
-}
-
-.price-amount {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--shop-color);
-}
-
-.price-amount.rental-price { color: var(--rental-color); }
-
-.price-unit {
-    font-size: .75rem;
-    color: var(--text-muted);
-    font-weight: 500;
-}
-
-.card-footer {
-    padding: 0 20px 18px;
-}
-
+.card-footer { padding: 0 14px 14px; }
 .btn-add {
     width: 100%;
-    padding: 11px;
-    border: none;
-    border-radius: var(--radius-md);
-    font-family: 'Inter', sans-serif;
-    font-size: .88rem;
-    font-weight: 700;
+    background: #FFD814;
+    border: 1px solid #FCD200;
+    color: #0F1111;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 0.85rem; font-weight: 600;
     cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--shop-color), #FF8C42);
-    color: #fff;
-    box-shadow: 0 4px 14px rgba(255,107,53,.3);
+    box-shadow: 0 2px 5px rgba(213,217,217,.5);
+    transition: background 0.2s ease;
 }
+.btn-add:hover { background: #F7CA00; border-color: #F2C200; }
+.btn-add.rental { background: var(--rental-color); border-color: var(--primary-dark); color: #fff; box-shadow: none; }
+.btn-add.rental:hover { background: var(--primary-dark); }
 
-.btn-add:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(255,107,53,.45);
-}
-
-.btn-add.rental {
-    background: linear-gradient(135deg, var(--rental-color), var(--primary-dark));
-    box-shadow: 0 4px 14px rgba(108,99,255,.3);
-}
-
-.btn-add.rental:hover {
-    box-shadow: 0 6px 20px rgba(108,99,255,.45);
-}
-
-/* Rental days input */
-.days-input-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
-.days-input-wrap label {
-    font-size: .8rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    white-space: nowrap;
-}
-
-.days-input-wrap input {
-    flex: 1;
-    padding: 7px 12px;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-family: 'Inter', sans-serif;
-    font-size: .85rem;
-    font-weight: 600;
-    color: var(--text);
-    background: var(--bg);
-    outline: none;
-    transition: var(--transition);
-    width: 70px;
-}
-
-.days-input-wrap input:focus {
-    border-color: var(--rental-color);
-}
+.days-input-wrap { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+.days-input-wrap input { width: 45px; padding: 4px; border: 1px solid var(--border); border-radius: 4px; text-align: center; }
+.days-input-wrap label { font-weight: 600; color: var(--text-muted); }
 
 /* ---- BUTTONS ---- */
 .btn {

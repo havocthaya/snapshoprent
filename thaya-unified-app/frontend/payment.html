@@ -101,17 +101,38 @@
     </style>
 </head>
 <body>
-<nav class="navbar">
-    <a href="index.html" class="navbar-brand">
-        <span class="logo-icon">📸</span>
-        <span>Snap<span class="brand-shop">Shop</span><span class="brand-sep">&</span><span class="brand-rent">Rent</span></span>
-    </a>
-    <div class="navbar-links">
-        <a href="index.html" class="nav-link">🏠 Home</a>
-        <a href="cart.html" class="nav-link">🛒 Cart</a>
-        <div id="nav-user" style="display:flex;align-items:center;gap:8px;"></div>
+<!-- AMAZON-STYLE HEADER -->
+<header class="amazon-header">
+    <div class="nav-belt">
+        <a href="index.html" class="nav-logo">
+            <span class="icon">📸</span>
+            <span>SnapShopRent<span class="in">.in</span></span>
+        </a>
+        <div class="nav-location">
+            <span style="font-size: 1.2rem;">📍</span>
+            <div>
+                <span class="loc-text">Delivering to Mumbai 400001</span>
+                <span class="loc-sub">Update location</span>
+            </div>
+        </div>
+        <div class="nav-search">
+            <select class="search-select"><option>All</option></select>
+            <input type="text" class="search-input" placeholder="Search SnapShopRent.in">
+            <button class="search-btn">🔍</button>
+        </div>
+        <div class="nav-actions">
+            <div class="nav-item" id="nav-user-amazon">
+                <span class="top">Hello, sign in</span>
+                <span class="bottom">Account & Lists ▾</span>
+            </div>
+            <a href="cart.html" class="nav-item nav-cart">
+                <span class="cart-bag">🛒</span>
+                <span class="cart-count cart-count-badge">0</span>
+                <span class="bottom" style="margin-top: 10px;">Cart</span>
+            </a>
+        </div>
     </div>
-</nav>
+</header>
 
 <div class="payment-page">
 

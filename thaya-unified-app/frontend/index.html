@@ -167,8 +167,32 @@
     <button class="tab-btn" id="tab-rental" onclick="switchMode('rental')">🔑 &nbsp;Rental</button>
 </div>
 
+<!-- COLORFUL STRIPS -->
+<div style="background: linear-gradient(to right, #6a11cb, #2575fc); color: #fff; padding: 20px; text-align: center; margin-bottom: 20px;">
+    <h3 style="margin:0; font-weight:800; text-transform:uppercase; letter-spacing:2px;">🔥 Top Ranking Gear - Up to 70% Off</h3>
+    <p style="margin:5px 0 0; opacity:0.9;">Limited time offer on all high-performance electronics and outdoor rentals.</p>
+</div>
+
 <!-- MAIN SECTION -->
 <div class="section">
+    
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none;">
+        <h3 style="white-space: nowrap; font-weight: 800;">Best Sellers in Electronics:</h3>
+        <div style="display: flex; gap: 15px;">
+            <div class="quad-item" style="width: 120px; flex-shrink: 0;" onclick="filterShop('Electronics', this)">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200" style="width: 100%; height: 80px; object-fit: cover; border-radius: 8px;">
+                <span style="font-size: 0.75rem; font-weight: 600; display: block; margin-top: 5px;">Headphones</span>
+            </div>
+            <div class="quad-item" style="width: 120px; flex-shrink: 0;" onclick="filterShop('Wearables', this)">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200" style="width: 100%; height: 80px; object-fit: cover; border-radius: 8px;">
+                <span style="font-size: 0.75rem; font-weight: 600; display: block; margin-top: 5px;">Smartwatches</span>
+            </div>
+            <div class="quad-item" style="width: 120px; flex-shrink: 0;" onclick="filterShop('Electronics', this)">
+                <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=200" style="width: 100%; height: 80px; object-fit: cover; border-radius: 8px;">
+                <span style="font-size: 0.75rem; font-weight: 600; display: block; margin-top: 5px;">Laptops</span>
+            </div>
+        </div>
+    </div>
 
     <!-- SHOP PANEL -->
     <div id="panel-shop">
@@ -307,14 +331,14 @@ function renderShopGrid(products) {
             <div class="card-body">
                 <span class="card-cat">${p.category}</span>
                 <h3 class="card-name">${p.name}</h3>
-                <p class="card-desc">${p.description}</p>
                 <div class="card-price">
-                    <span class="price-amount">₹${p.price.toLocaleString()}</span>
+                    <span class="price-currency">₹</span>
+                    <span class="price-amount">${p.price.toLocaleString()}</span>
                 </div>
             </div>
             <div class="card-footer">
                 <button class="btn-add" onclick="addShopToCart('${p._id||p.id}', '${p.name.replace(/'/g,"\\'")}', ${p.price}, '${p.image}', '${p.category}')">
-                    🛒 &nbsp;Add to Cart
+                    Add to Cart
                 </button>
             </div>
         </div>
@@ -372,9 +396,9 @@ function renderRentalGrid(products) {
             <div class="card-body">
                 <span class="card-cat">${p.category}</span>
                 <h3 class="card-name">${p.name}</h3>
-                <p class="card-desc">${p.description}</p>
                 <div class="card-price">
-                    <span class="price-amount rental-price">₹${p.pricePerDay.toLocaleString()}</span>
+                    <span class="price-currency">₹</span>
+                    <span class="price-amount rental-price">${p.pricePerDay.toLocaleString()}</span>
                     <span class="price-unit">/ day</span>
                 </div>
             </div>
@@ -384,7 +408,7 @@ function renderRentalGrid(products) {
                     <input type="number" id="days-${p._id||p.id}" min="1" value="1" max="30">
                 </div>
                 <button class="btn-add rental" onclick="addRentalToCart('${p._id||p.id}', '${p.name.replace(/'/g,"\\'")}', ${p.pricePerDay}, '${p.image}', '${p.category}')">
-                    🔑 &nbsp;Add to Bag
+                    Rent Now
                 </button>
             </div>
         </div>
