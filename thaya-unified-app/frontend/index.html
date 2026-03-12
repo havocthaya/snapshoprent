@@ -482,22 +482,28 @@ function addRentalToCart(id, name, pricePerDay, image, category) {
 /* ---- demo data (fallback when no MongoDB) ---- */
 function getDemoShopProducts() {
     return [
-        { id:'s1', name:'Wireless Earbuds Pro', image:'https://images.unsplash.com/photo-1608156639585-b3a032ef9689?w=600&auto=format&fit=crop&q=80', description:'Premium wireless earbuds with ANC and 30h battery.', category:'Electronics', price:1299 },
-        { id:'s2', name:'Mechanical Keyboard', image:'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600&auto=format&fit=crop&q=80', description:'RGB backlit mechanical keyboard with cherry MX switches.', category:'Electronics', price:2499 },
-        { id:'s3', name:'Running Shoes X-1', image:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80', description:'Lightweight responsive running shoes with cushioned sole.', category:'Footwear', price:3499 },
-        { id:'s4', name:'Smart Watch Series 5', image:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80', description:'Fitness tracking smart watch with heart rate and GPS.', category:'Wearables', price:5999 },
-        { id:'s5', name:'Backpack Explorer 40L', image:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop&q=80', description:'Durable 40L hiking backpack with ergonomic design.', category:'Outdoors', price:1899 },
-        { id:'s6', name:'Bluetooth Speaker MAX', image:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&auto=format&fit=crop&q=80', description:'Waterproof portable speaker with 360° surround sound.', category:'Electronics', price:2199 },
+        { id:'s1', name:'Wireless Earbuds Pro', image:'https://images.unsplash.com/photo-1608156639585-b3a032ef9689?w=600&auto=format&fit=crop&q=80', category:'Electronics', price:1299, type:'sale' },
+        { id:'s2', name:'Mechanical Keyboard', image:'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600&auto=format&fit=crop&q=80', category:'Electronics', price:2499, type:'sale' },
+        { id:'s3', name:'Running Shoes X-1', image:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80', category:'Footwear', price:3499, type:'sale' },
+        { id:'s4', name:'Smart Watch Series 5', image:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80', category:'Wearables', price:5999, type:'sale' },
+        { id:'s5', name:'Backpack Explorer 40L', image:'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop&q=80', category:'Outdoors', price:1899, type:'sale' },
+        { id:'s6', name:'Bluetooth Speaker MAX', image:'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&auto=format&fit=crop&q=80', category:'Electronics', price:2199, type:'sale' },
+        { id:'s7', name:'Smartphone Pro Max', image:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop&q=80', category:'Mobiles', price:69999, type:'sale' },
+        { id:'s8', name:'UltraWide Curved Monitor', image:'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop&q=80', category:'Electronics', price:28500, type:'sale' },
+        { id:'s9', name:'Espresso Coffee Maker', image:'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=600&auto=format&fit=crop&q=80', category:'Home', price:4200, type:'sale' },
     ];
 }
 function getDemoRentalProducts() {
     return [
-        { id:'r1', name:'Mountain Bike X-200', image:'https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?w=600&auto=format&fit=crop&q=80', description:'Hardtail mountain bike with 21 speeds and front suspension.', category:'Bikes', pricePerDay:350 },
-        { id:'r2', name:'Sony A7 III Camera', image:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&auto=format&fit=crop&q=80', description:'Full-frame mirrorless camera with 4K video.', category:'Electronics', pricePerDay:1200 },
-        { id:'r3', name:'Professional Drill Kit', image:'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600&auto=format&fit=crop&q=80', description:'Cordless hammer drill with multiple bits and two batteries.', category:'Tools', pricePerDay:250 },
-        { id:'r4', name:'Camping Tent (4-Person)', image:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&auto=format&fit=crop&q=80', description:'Waterproof 4-person tent with easy-setup technology.', category:'Outdoors', pricePerDay:400 },
-        { id:'r5', name:'DJI Mini 3 Drone', image:'https://images.unsplash.com/photo-1508444845599-5c89863b1c44?w=600&auto=format&fit=crop&q=80', description:'Compact drone with 4K camera, 38-min flight time.', category:'Electronics', pricePerDay:1500 },
-        { id:'r6', name:'Kayak Double Seat', image:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&auto=format&fit=crop&q=80', description:'Tandem kayak for two. Includes paddles and life jackets.', category:'Outdoors', pricePerDay:550 },
+        { id:'r1', name:'Mountain Bike X-200', image:'https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?w=600&auto=format&fit=crop&q=80', category:'Bikes', pricePerDay:350, type:'rental' },
+        { id:'r2', name:'Sony A7 III Camera', image:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&auto=format&fit=crop&q=80', category:'Electronics', pricePerDay:1200, type:'rental' },
+        { id:'r3', name:'Professional Drill Kit', image:'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600&auto=format&fit=crop&q=80', category:'Tools', pricePerDay:250, type:'rental' },
+        { id:'r4', name:'Camping Tent (4-Person)', image:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&auto=format&fit=crop&q=80', category:'Outdoors', pricePerDay:400, type:'rental' },
+        { id:'r5', name:'DJI Mini 3 Drone', image:'https://images.unsplash.com/photo-1508444845599-5c89863b1c44?w=600&auto=format&fit=crop&q=80', category:'Electronics', pricePerDay:1500, type:'rental' },
+        { id:'r6', name:'Kayak Double Seat', image:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&auto=format&fit=crop&q=80', category:'Outdoors', pricePerDay:550, type:'rental' },
+        { id:'r7', name:'Gaming Laptop RTX 4090', image:'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600&auto=format&fit=crop&q=80', category:'Electronics', pricePerDay:2500, type:'rental' },
+        { id:'r8', name:'Outdoor Projector Screen', image:'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=600&auto=format&fit=crop&q=80', category:'Home', pricePerDay:800, type:'rental' },
+        { id:'r9', name:'Pro Golf Club Set', image:'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&auto=format&fit=crop&q=80', category:'Sports', pricePerDay:1200, type:'rental' },
     ];
 }
 
