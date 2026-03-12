@@ -51,18 +51,35 @@ function showToast(msg, type = 'info') {
 function renderNavbar() {
     const user = getUser();
     const userEl = document.getElementById('nav-user');
-    if (!userEl) return;
-    if (user) {
-        userEl.innerHTML = `
-          <span style="font-size:.85rem;font-weight:600;color:var(--text-muted)">👋 ${user.name}</span>
-          ${user.isAdmin ? `<a href="admin.html" class="nav-link"><span>⚙️</span> Admin</a>` : ''}
-          <button class="btn-nav-user btn" onclick="logout()">Log Out</button>
-        `;
-    } else {
-        userEl.innerHTML = `
-          <a href="login.html" class="nav-link">Log In</a>
-          <a href="register.html" class="btn-nav-user btn">Sign Up</a>
-        `;
+    const amazonUserEl = document.getElementById('nav-user-amazon');
+
+    if (userEl) {
+        if (user) {
+            userEl.innerHTML = `
+              <span style="font-size:.85rem;font-weight:600;color:var(--text-muted)">👋 ${user.name}</span>
+              ${user.isAdmin ? `<a href="admin.html" class="nav-link"><span>⚙️</span> Admin</a>` : ''}
+              <button class="btn-nav-user btn" onclick="logout()">Log Out</button>
+            `;
+        } else {
+            userEl.innerHTML = `
+              <a href="login.html" class="nav-link">Log In</a>
+              <a href="register.html" class="btn-nav-user btn">Sign Up</a>
+            `;
+        }
+    }
+
+    if (amazonUserEl) {
+        if (user) {
+            amazonUserEl.innerHTML = `
+              <span class="top">Hello, ${user.name.split(' ')[0]}</span>
+              <span class="bottom" onclick="logout()" style="cursor:pointer">Sign Out ▾</span>
+            `;
+        } else {
+            amazonUserEl.innerHTML = `
+              <span class="top" onclick="window.location.href='login.html'">Hello, sign in</span>
+              <span class="bottom" onclick="window.location.href='login.html'">Account & Lists ▾</span>
+            `;
+        }
     }
     updateCartBadge();
 }

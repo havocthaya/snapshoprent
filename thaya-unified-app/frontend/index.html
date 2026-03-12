@@ -10,36 +10,159 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar" id="main-nav">
-    <a href="index.html" class="navbar-brand" style="gap:8px">
-        <span class="logo-icon">📸</span>
-        <span>Snap<span class="brand-shop">Shop</span><span class="brand-sep">&amp;</span><span class="brand-rent">Rent</span></span>
-    </a>
-    <div class="navbar-links">
-        <a href="index.html" class="nav-link active" id="nav-home">
-            <span>🏠</span> <span>Home</span>
+<!-- AMAZON-STYLE HEADER -->
+<header class="amazon-header">
+    <!-- Top Belt -->
+    <div class="nav-belt">
+        <a href="index.html" class="nav-logo">
+            <span class="icon">📸</span>
+            <span>SnapShopRent<span class="in">.in</span></span>
         </a>
-        <a href="cart.html" class="nav-link" id="nav-cart">
-            🛒 Cart <span class="nav-badge cart-count-badge" style="display:none">0</span>
-        </a>
-        <div id="nav-user" style="display:flex;align-items:center;gap:8px;"></div>
-    </div>
-</nav>
+        
+        <div class="nav-location">
+            <span style="font-size: 1.2rem;">📍</span>
+            <div>
+                <span class="loc-text">Delivering to Mumbai 400001</span>
+                <span class="loc-sub">Update location</span>
+            </div>
+        </div>
 
-<!-- HERO -->
-<div class="hero">
-    <span class="hero-label">✨ SnapShopRent — Mini Shop + Rental in One</span>
-    <h1>Your One-Stop<br><span class="highlight">Shop & Rent</span> Platform</h1>
-    <p>Browse premium products to buy, or rent the gear you need — all from a single, beautiful marketplace.</p>
-    <div class="hero-btns">
-        <button class="btn btn-shop" onclick="switchMode('shop')">🛍 &nbsp;Start Shopping</button>
-        <button class="btn btn-outline" onclick="switchMode('rental')">🔑 &nbsp;Browse Rentals</button>
+        <div class="nav-search">
+            <select class="search-select">
+                <option>All</option>
+                <option>Electronics</option>
+                <option>Rental</option>
+                <option>Shop</option>
+            </select>
+            <input type="text" class="search-input" placeholder="Search SnapShopRent.in">
+            <button class="search-btn">🔍</button>
+        </div>
+
+        <div class="nav-actions">
+            <div class="nav-item" id="nav-user-amazon">
+                <span class="top">Hello, sign in</span>
+                <span class="bottom">Account & Lists ▾</span>
+            </div>
+            <div class="nav-item">
+                <span class="top">Returns</span>
+                <span class="bottom">& Orders</span>
+            </div>
+            <a href="cart.html" class="nav-item nav-cart">
+                <span class="cart-bag">🛒</span>
+                <span class="cart-count cart-count-badge">0</span>
+                <span class="bottom" style="margin-top: 10px;">Cart</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <nav class="nav-main">
+        <ul class="main-links">
+            <li><a href="#" class="all">☰ All</a></li>
+            <li><a href="#" onclick="switchMode('shop')">Fresh</a></li>
+            <li><a href="#" onclick="switchMode('shop')">Bestsellers</a></li>
+            <li><a href="#" onclick="switchMode('shop')">Mobiles</a></li>
+            <li><a href="#" onclick="switchMode('rental')">Rental Gear</a></li>
+            <li><a href="#" onclick="switchMode('shop')">Electronics</a></li>
+            <li><a href="#" onclick="switchMode('shop')">Home & Kitchen</a></li>
+            <li><a href="admin-login.html">Admin Panel</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- COLORFUL HERO & DISCOVERY -->
+<div class="amazon-hero">
+    <div class="hero-promo">
+        <div class="promo-text">
+            <h2>Starting ₹199<br>Deals on fashion & beauty</h2>
+            <p>Upgrade your lifestyle with the latest trends and essential gear.</p>
+            <div class="promo-badge">Explore All Offers →</div>
+        </div>
+        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80" class="promo-img" alt="Fashion Promo">
     </div>
 </div>
 
-<!-- MODE TABS -->
-<div class="mode-tabs" id="mode-tabs">
+<div class="discovery-grid">
+    <div class="discovery-card">
+        <h3>Appliances for home | Up to 55% off</h3>
+        <div class="card-quad">
+            <div class="quad-item" onclick="filterShop('Electronics', this)">
+                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400" class="quad-img">
+                <span class="quad-name">Air conditioners</span>
+            </div>
+            <div class="quad-item" onclick="filterShop('Electronics', this)">
+                <img src="https://images.unsplash.com/photo-1571175432230-01c288a69984?w=400" class="quad-img">
+                <span class="quad-name">Refrigerators</span>
+            </div>
+            <div class="quad-item" onclick="filterShop('Electronics', this)">
+                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400" class="quad-img">
+                <span class="quad-name">Microwaves</span>
+            </div>
+            <div class="quad-item" onclick="filterShop('Electronics', this)">
+                <img src="https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=400" class="quad-img">
+                <span class="quad-name">Washing machines</span>
+            </div>
+        </div>
+        <a href="#" class="card-footer-link" onclick="switchMode('shop')">See more</a>
+    </div>
+
+    <div class="discovery-card">
+        <h3>Gear for Rent | Instant Booking</h3>
+        <div class="card-quad">
+            <div class="quad-item" onclick="filterRental('Bikes', this)">
+                <img src="https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=400" class="quad-img">
+                <span class="quad-name">Mountain Bikes</span>
+            </div>
+            <div class="quad-item" onclick="filterRental('Electronics', this)">
+                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400" class="quad-img">
+                <span class="quad-name">DSLR Cameras</span>
+            </div>
+            <div class="quad-item" onclick="filterRental('Tools', this)">
+                <img src="https://images.unsplash.com/photo-1504148455328-c376907d081c?w=400" class="quad-img">
+                <span class="quad-name">Power Tools</span>
+            </div>
+            <div class="quad-item" onclick="filterRental('Outdoors', this)">
+                <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=400" class="quad-img">
+                <span class="quad-name">Camping Kits</span>
+            </div>
+        </div>
+        <a href="#" class="card-footer-link" onclick="switchMode('rental')">Browse all rentals</a>
+    </div>
+
+    <div class="discovery-card">
+        <h3>Starting ₹49 | Daily Essentials</h3>
+        <div class="card-quad">
+            <div class="quad-item" onclick="filterShop('Wearables', this)">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" class="quad-img">
+                <span class="quad-name">Smart Watches</span>
+            </div>
+            <div class="quad-item" onclick="filterShop('Footwear', this)">
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" class="quad-img">
+                <span class="quad-name">Sports Shoes</span>
+            </div>
+            <div class="quad-item" onclick="filterShop('Electronics', this)">
+                <img src="https://images.unsplash.com/photo-1608156639585-b3a032ef9689?w=400" class="quad-img">
+                <span class="quad-name">Wireless Buds</span>
+            </div>
+            <div class="quad-item" onclick="filterShop('Outdoors', this)">
+                <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400" class="quad-img">
+                <span class="quad-name">Travel Bags</span>
+            </div>
+        </div>
+        <a href="#" class="card-footer-link" onclick="switchMode('shop')">Explore all</a>
+    </div>
+
+    <div class="discovery-card" style="background:var(--bg-accent); justify-content: center; align-items: center;">
+        <h3 style="text-align:center">Sign in for your best experience</h3>
+        <button class="btn btn-shop" style="width: 100%;" onclick="window.location.href='login.html'">Sign in securely</button>
+        <div style="margin-top: 20px; font-size: 0.8rem; text-align: center;">
+            New customer? <a href="register.html" style="color:#007185">Start here.</a>
+        </div>
+    </div>
+</div>
+
+<!-- MODE TABS (HIDDEN BUT FUNCTIONAL) -->
+<div class="mode-tabs" id="mode-tabs" style="display:none">
     <button class="tab-btn active-shop" id="tab-shop" onclick="switchMode('shop')">🛍 &nbsp;Mini Shop</button>
     <button class="tab-btn" id="tab-rental" onclick="switchMode('rental')">🔑 &nbsp;Rental</button>
 </div>
@@ -81,6 +204,47 @@
 
 </div>
 
+<!-- BACK TO TOP -->
+<div style="background:var(--amazon-nav); color:#fff; text-align:center; padding:15px; cursor:pointer; font-size:0.85rem; font-weight:600;" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+    Back to top
+</div>
+
+<!-- COLORFUL FOOTER -->
+<footer style="background:var(--amazon-dark); color:#fff; padding:40px 20px; text-align:center;">
+    <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:40px; text-align:left;">
+        <div>
+            <h4 style="margin-bottom:20px; color:var(--shop-color);">Get to Know Us</h4>
+            <ul style="list-style:none; line-height:2;">
+                <li><a href="#" style="font-size:0.85rem; opacity:0.8;">About Us</a></li>
+                <li><a href="#" style="font-size:0.85rem; opacity:0.8;">Careers</a></li>
+                <li><a href="#" style="font-size:0.85rem; opacity:0.8;">Press Releases</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="margin-bottom:20px; color:var(--shop-color);">Connect with Us</h4>
+            <ul style="list-style:none; line-height:2;">
+                <li><a href="#" style="font-size:0.85rem; opacity:0.8;">Facebook</a></li>
+                <li><a href="#" style="font-size:0.85rem; opacity:0.8;">Twitter</a></li>
+                <li><a href="#" style="font-size:0.85rem; opacity:0.8;">Instagram</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="margin-bottom:20px; color:var(--shop-color);">Let Us Help You</h4>
+            <ul style="list-style:none; line-height:2;">
+                <li><a href="admin-login.html" style="font-size:0.85rem; opacity:0.8;">Your Account</a></li>
+                <li><a href="#" style="font-size:0.85rem; opacity:0.8;">Help Center</a></li>
+                <li><a href="#" style="font-size:0.85rem; opacity:0.8;">Returns</a></li>
+            </ul>
+        </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.1); margin-top:40px; padding-top:40px;">
+        <div style="display:flex; align-items:center; justify-content:center; gap:10px; font-weight:800; font-size:1.2rem;">
+            <span>📸</span> SnapShopRent<span style="color:var(--shop-color)">.in</span>
+        </div>
+        <p style="font-size:0.75rem; opacity:0.6; margin-top:20px;">© 2026 SnapShopRent - Premium Shopping & Rental Platform. Built for India.</p>
+    </div>
+</footer>
+
 <div id="toast-container" class="toast-container"></div>
 
 <script src="js/api.js"></script>
@@ -91,12 +255,21 @@ let rentalProducts = [];
 
 function switchMode(mode) {
     currentMode = mode;
-    document.getElementById('panel-shop').style.display   = mode === 'shop'   ? '' : 'none';
-    document.getElementById('panel-rental').style.display = mode === 'rental' ? '' : 'none';
-    const tabShop   = document.getElementById('tab-shop');
+    const panelShop = document.getElementById('panel-shop');
+    const panelRental = document.getElementById('panel-rental');
+    
+    if (panelShop) panelShop.style.display = mode === 'shop' ? '' : 'none';
+    if (panelRental) panelRental.style.display = mode === 'rental' ? '' : 'none';
+    
+    // Optional: Update tab highlighting if elements exist
+    const tabShop = document.getElementById('tab-shop');
     const tabRental = document.getElementById('tab-rental');
-    tabShop.className   = 'tab-btn' + (mode === 'shop'   ? ' active-shop'   : '');
-    tabRental.className = 'tab-btn' + (mode === 'rental' ? ' active-rental' : '');
+    if (tabShop) tabShop.className = 'tab-btn' + (mode === 'shop' ? ' active-shop' : '');
+    if (tabRental) tabRental.className = 'tab-btn' + (mode === 'rental' ? ' active-rental' : '');
+
+    // Scroll to products section for better UX
+    const section = document.querySelector('.section');
+    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     if (mode === 'rental' && rentalProducts.length === 0) loadRentalProducts();
 }
