@@ -85,6 +85,24 @@ function renderNavbar() {
             `;
         }
     }
+    const loginCard = document.getElementById('nav-login-card-anchor');
+    if (loginCard) {
+        if (user) {
+            loginCard.innerHTML = `
+                <h3 style="text-align:center">Welcome back, ${user.name.split(' ')[0]}!</h3>
+                <p style="font-size:0.85rem; text-align:center; margin-bottom:15px;">Check your latest orders and manage rentals.</p>
+                <button class="btn btn-shop" style="width: 100%;" onclick="window.location.href='cart.html'">Go to Your Cart</button>
+            `;
+        } else {
+            loginCard.innerHTML = `
+                <h3 style="text-align:center">Sign in for your best experience</h3>
+                <button class="btn btn-shop" style="width: 100%;" onclick="window.location.href='login.html'">Sign in securely</button>
+                <div style="margin-top: 20px; font-size: 0.8rem; text-align: center;">
+                    New customer? <a href="register.html" style="color:#007185">Start here.</a>
+                </div>
+            `;
+        }
+    }
     updateCartBadge();
 }
 

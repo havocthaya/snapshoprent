@@ -19,13 +19,13 @@
             <span>SnapShopRent<span class="in">.in</span></span>
         </a>
         
-        <div class="nav-location">
-            <span style="font-size: 1.2rem;">📍</span>
-            <div>
-                <span class="loc-text">Delivering to Mumbai 400001</span>
-                <span class="loc-sub">Update location</span>
+            <div class="nav-location" onclick="window.location.href='login.html'" style="cursor:pointer">
+                <span style="font-size: 1.2rem;">📍</span>
+                <div>
+                    <span class="loc-text">Delivering to Mumbai 400001</span>
+                    <span class="loc-sub">Update location</span>
+                </div>
             </div>
-        </div>
 
         <div class="nav-search">
             <select class="search-select">
@@ -34,8 +34,8 @@
                 <option>Rental</option>
                 <option>Shop</option>
             </select>
-            <input type="text" class="search-input" placeholder="Search SnapShopRent.in">
-            <button class="search-btn" onclick="switchMode('shop')">🔍</button>
+            <input type="text" class="search-input" id="main-search-input" placeholder="Search SnapShopRent.in" onkeyup="if(event.key==='Enter')handleSearch()">
+            <button class="search-btn" onclick="handleSearch()">🔍</button>
         </div>
 
         <div class="nav-actions">
@@ -58,7 +58,7 @@
     <!-- Main Navigation Bar -->
     <nav class="nav-main">
         <ul class="main-links">
-            <li><a href="#" class="all">☰ All</a></li>
+            <li><a href="#" class="all" onclick="filterShop('All', null)">☰ All</a></li>
             <li><a href="#" onclick="filterShop('Bestsellers', this)">Fresh</a></li>
             <li><a href="#" onclick="filterShop('Electronics', this)">Bestsellers</a></li>
             <li><a href="#" onclick="filterShop('Electronics', this)">Mobiles</a></li>
@@ -152,7 +152,8 @@
         <a href="#" class="card-footer-link" onclick="switchMode('shop')">Explore all</a>
     </div>
 
-    <div class="discovery-card" style="background:var(--bg-accent); justify-content: center; align-items: center;">
+    <div id="nav-login-card-anchor" class="discovery-card" style="background:var(--bg-accent); justify-content: center; align-items: center;">
+        <!-- Dynamic content from api.js -->
         <h3 style="text-align:center">Sign in for your best experience</h3>
         <button class="btn btn-shop" style="width: 100%;" onclick="window.location.href='login.html'">Sign in securely</button>
         <div style="margin-top: 20px; font-size: 0.8rem; text-align: center;">
@@ -256,8 +257,8 @@
             <h4 style="margin-bottom:20px; color:var(--shop-color);">Let Us Help You</h4>
             <ul style="list-style:none; line-height:2;">
                 <li><a href="admin-login.html" style="font-size:0.85rem; opacity:0.8;">Your Account</a></li>
-                <li><a href="#" style="font-size:0.85rem; opacity:0.8;">Help Center</a></li>
-                <li><a href="#" style="font-size:0.85rem; opacity:0.8;">Returns</a></li>
+                <li><a href="index.html" style="font-size:0.85rem; opacity:0.8;">Help Center</a></li>
+                <li><a href="login.html" style="font-size:0.85rem; opacity:0.8;">Returns</a></li>
             </ul>
         </div>
     </div>
@@ -293,17 +294,28 @@ function switchMode(mode) {
 }
 
 function filterShop(cat, btn) {
-    switchMode('shop'); // Ensure we are in shop mode and scrolled
+    switchMode('shop');
     document.querySelectorAll('#shop-filters .filter-pill').forEach(b => b.classList.remove('active'));
-    // If btn is passed, highlight it, otherwise find the one with the category
-    if (btn) {
-        btn.classList.add('active');
-    } else {
+    if (btn) btn.classList.add('active');
+    else {
         const pills = document.querySelectorAll('#shop-filters .filter-pill');
         pills.forEach(p => { if (p.textContent === cat) p.classList.add('active'); });
     }
     const filtered = cat === 'All' ? shopProducts : shopProducts.filter(p => p.category === cat);
     renderShopGrid(filtered);
+}
+
+function handleSearch() {
+    const query = document.getElementById('main-search-input').value.trim().toLowerCase();
+    if (!query) {
+        switchMode('shop');
+        renderShopGrid(shopProducts);
+        return;
+    }
+    const fS = shopProducts.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+    const fR = rentalProducts.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+    if (fS.length >= fR.length) { switchMode('shop'); renderShopGrid(fS); }
+    else { switchMode('rental'); renderRentalGrid(fR); }
 }
 
 function filterRental(cat, btn) {
